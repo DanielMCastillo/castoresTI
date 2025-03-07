@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-sm-12 col-12">
+  <div class="bg-black rounded h-100 p-4">
+      <h6 class="mb-4">Lista de Usuarios</h6>
+      <table class="table">
+          <thead>
+              <tr>
+                <th scope="col">Usuario</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Acción</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for usuario in usuarios %}
+              <tr>
+                <td>{{ usuario.username }}</td>
+                <td>
+                  {% for group in usuario.groups.all %}
+                    {{ group.name }}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                </td>
+                <td>
+                  <a href="#" class="btn bg-secondary btn-sm">Editar</a>
+                  <a href="#" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+      
+      </table>
+  </div>
+</div>
+
+    
+  </table>
+
+  <a href="{% url 'crear_usuario' %}" class="btn btn-primary mt-4 float-right">Crear nuevo Usuario</a>
+
+
+
+
+{% endblock %}
+
+

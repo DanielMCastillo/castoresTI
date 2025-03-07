@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Crear Usuario</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <div class="form-group">
+      <label for="grupo">Asignar rol</label>
+      <select name="grupo" id="grupo" class="form-control">
+        <option value="Administrador">Administrador</option>
+        <option value="Almacenista">Almacenista</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Crear Usuario</button>
+  </form>
+{% endblock %}

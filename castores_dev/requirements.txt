@@ -1,0 +1,8 @@
+Django==4.0.2
+mysqlclient==2.1.0
+Pillow==9.0.1
+six==1.16.0
+python-decouple==3.6
+django-jquery==2.2.4
+django-map-widgets==0.4.1
+  

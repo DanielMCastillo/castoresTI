@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Agregar Producto</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <br>
+            <div class="card-header" style="background-color:rgb(180, 6, 3); color: white;"><b>PRODUCTOS</b>
+            </div>
+            <br>
+            <br>
+        </span>
+            <span data-toggle="tooltip"
+                title="Coloque la procedencia del Artista o Grupo Artístico que se presenta en el evento">
+                <div class="form-group">
+                    <label>Nombre: </label> 
+                    {{ form.nombre }}
+                    <small id="obligatorioID" class="form-text text-muted">Campo obligatorio</small>
+                </div>
+            </span>
+            <br>
+                <span data-toggle="tooltip" title="Coloque el número de artistas mujeres.">
+                    <div class="form-group">
+                    <label>Descripción </label> 
+                    {{ form.descripcion }}
+                    <small id="obligatorioID" class="form-text text-muted">Campo obligatorio</small>
+                    </div>
+                </span>
+                </div>
+                <div class="col-md-6">
+                    <span data-toggle="tooltip" title="Coloque el número de artistas hombres.">
+                        <div class="form-group">
+                        <label>Cantidad </label> 
+                        {{ form.cantidad}}
+                        <small id="obligatorioID" class="form-text text-muted">Campo obligatorio</small>
+                        </div>
+                    </span>
+                    </div>
+                    <div class="col-md-6">
+                        <span data-toggle="tooltip" title="Coloque el número de artistas hombres.">
+                            <div class="form-group">
+                            <label>Estatus </label> 
+                            {{ form.estatus}}
+                            <small id="obligatorioID" class="form-text text-muted">Campo obligatorio</small>
+                            </div>
+                        </span>
+                        </div>
+                    <button id="guardar-button" type="submit" class="btn btn-primary mt-3">
+                            Guardar
+                        </button>
+                    <a href="{% url 'lista_productos' %}" class="btn bg-secondary mt-3">Ver productos</a>
+            </div>
+            <br>
+    </form>
+</div>
+{% endblock %}

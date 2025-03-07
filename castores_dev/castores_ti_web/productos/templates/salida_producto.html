@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Salida de Productos</h2>
+
+    {% if messages %}
+    <div class="alert alert-danger">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Producto:</label>
+            {{ form.producto }}
+        </div>
+        <div class="form-group">
+            <label>Cantidad:</label>
+            {{ form.cantidad_salida }}
+        </div>
+        <button type="submit" class="btn btn-danger mt-3">Registrar Salida</button>
+        <a href="{% url 'lista_productos' %}" class="btn btn-secondary mt-3">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

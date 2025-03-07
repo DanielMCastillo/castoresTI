@@ -1,0 +1,63 @@
+<!-- historial_movimientos.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Historial de Movimientos de Productos</h2>
+
+    <form method="get" class="mb-4">
+        <label for="tipo">Filtrar por Tipo de Movimiento:</label>
+        <select name="tipo" id="tipo" class="form-control" onchange="this.form.submit()">
+            <option value="">--Seleccione--</option>
+            <option value="entrada" {% if request.GET.tipo == 'entrada' %}selected{% endif %}>Entrada</option>
+            <option value="salida" {% if request.GET.tipo == 'salida' %}selected{% endif %}>Salida</option>
+        </select>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Tipo de Movimiento</th>
+                <th>Realizado por</th>
+                <th>Fecha y Hora</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movimiento in movimientos %}
+                <tr>
+                    <td>{{ movimiento.producto.nombre }}</td>
+                    <td>{{ movimiento.cantidad }}</td>
+                    <td>{{ movimiento.get_tipo_movimiento_display }}</td>
+                    <td>{% if movimiento.realizado_por %}
+                        {{ movimiento.realizado_por.username }}
+                    {% else %}
+                        Desconocido
+                    {% endif %}
+                    </td>
+                    <td>{{ movimiento.fecha_hora }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if movimientos.has_previous %}
+                <a href="?page=1{% if request.GET.tipo %}&tipo={{ request.GET.tipo }}{% endif %}">&laquo; primera</a>
+                <a href="?page={{ movimientos.previous_page_number }}{% if request.GET.tipo %}&tipo={{ request.GET.tipo }}{% endif %}">anterior</a>
+            {% endif %}
+            
+            <span class="current">
+                Página {{ movimientos.number }} de {{ movimientos.paginator.num_pages }}.
+            </span>
+
+            {% if movimientos.has_next %}
+                <a href="?page={{ movimientos.next_page_number }}{% if request.GET.tipo %}&tipo={{ request.GET.tipo }}{% endif %}">siguiente</a>
+                <a href="?page={{ movimientos.paginator.num_pages }}{% if request.GET.tipo %}&tipo={{ request.GET.tipo }}{% endif %}">última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

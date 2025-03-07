@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Productos Activos</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                {% if user.is_superuser %}
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Acciones</th>
+                {% else %}
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                {% endif %}
+
+            </tr>
+        </thead>
+        <tbody>
+            {% if user.is_superuser %}
+            {% for producto in productos_activos %}
+            <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>{{ producto.cantidad }}</td>
+                <td>
+                    <!-- Formulario para aumentar inventario -->
+                    <form id="aumentar-inventario-form-{{ producto.idproducto }}" method="POST" action="{% url 'aumentar_inventario' producto.idproducto %}" style="display: none;">
+                        {% csrf_token %}
+                        <input type="number" name="cantidad" min="1" required>
+                        <button type="submit" class="btn btn-success">Aumentar Inventario</button>
+                    </form>
+    
+                    <!-- Botón para editar inventario -->
+                    <a href="javascript:void(0);" class="btn bg-secondary" id="editar-inventario-btn-{{ producto.idproducto }}">Editar Inventario</a>
+    
+                    <!-- Botón para dar de baja -->
+                    <a href="{% url 'cambiar_estatus_producto' producto.idproducto %}" class="btn btn-danger">Dar de Baja</a>
+                </td>
+            {% endfor %}
+            </tr>
+            {% else %}
+            {% for producto in productos_activos %}
+            <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>{{ producto.cantidad }}</td>
+                <td>
+                </td>
+                {% endfor %}
+            {%endif %}
+        </tbody>
+    </table>
+    
+    <script>
+        // Obtener todos los botones de editar inventario
+        const editarBtns = document.querySelectorAll('[id^="editar-inventario-btn-"]');
+    
+        // Recorrer cada botón de editar inventario y agregar un event listener
+        editarBtns.forEach((btn) => {
+            btn.addEventListener('click', function() {
+                // Obtener el ID del producto de la ID del botón
+                const productoId = this.id.split('-').pop();
+                const aumentarForm = document.getElementById('aumentar-inventario-form-' + productoId);
+                
+                // Mostrar u ocultar el formulario de aumentar inventario
+                if (aumentarForm.style.display === 'none' || aumentarForm.style.display === '') {
+                    aumentarForm.style.display = 'block';
+                } else {
+                    aumentarForm.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    
+
+<h2>Productos Inactivos</h2>
+<table class="table">
+    <thead>
+        {% if user.is_superuser %}
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos_inactivos %}
+        <tr>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.descripcion }}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td>
+                <a href="{% url 'cambiar_estatus_producto' producto.idproducto %}" class="btn btn-success">Activar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    {% else  %}
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos_inactivos %}
+        <tr>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.descripcion }}</td>
+            <td>{{ producto.cantidad }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    {% endif %}
+</table>
+</div>
+{% endblock %}
+<script>
+    // Obtener los elementos del botón y el formulario
+    const editarBtn = document.getElementById('editar-inventario-btn');
+    const aumentarForm = document.getElementById('aumentar-inventario-form');
+
+    // Agregar un event listener al botón para mostrar el formulario
+    editarBtn.addEventListener('click', function() {
+        // Cambiar el estilo del formulario para hacerlo visible
+        if (aumentarForm.style.display === 'none') {
+            aumentarForm.style.display = 'block';
+        } else {
+            aumentarForm.style.display = 'none';
+        }
+    });
+</script>
